@@ -7,7 +7,7 @@
   "homepage_url": "http://deepakrai.in",
   "content_scripts": [{
     "matches": ["https://www.amazon.com/*"],
-    "js": ["jquery.min.js", "script.js", "xlsx.full.min.js", "FileSaver.min.js"],
+    "js": ["jquery.min.js", "xlsx.full.min.js", "FileSaver.min.js", "script.js"],
     "run_at": "document_end"
   }],
   "background": {

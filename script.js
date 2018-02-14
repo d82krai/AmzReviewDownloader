@@ -64,13 +64,21 @@ function test()
 	scrap();
 }
 
-
 function scrap()
 {
 	var data = [];
 	var pageCount= $('.a-pagination li:nth-last-child(2)').text();
 	var currentPage=$('.a-pagination li.a-selected').text();
 	var reviewCountPerPage = $('div[data-hook=review]').length;
+	
+	if(reviewCountPerPage == undefined || reviewCountPerPage < 10) //retrying
+	{
+		setTimeout(function() {
+			pageCount= $('.a-pagination li:nth-last-child(2)').text();
+			currentPage=$('.a-pagination li.a-selected').text();
+			reviewCountPerPage = $('div[data-hook=review]').length;
+		}, 2000);
+	}
 
 	for(var i=0;i<=reviewCountPerPage-1;i++)
 	{
@@ -99,13 +107,18 @@ function scrap()
 			}
 			catch(err)
 			{
-				$('.a-pagination li.a-selected').next().html();
-				//Download();
+				SaveData(data);
+				if(parseInt(pageCount) == parseInt(currentPage))
+				{
+					Download();
+					localStorage.removeItem('reviews');
+				}
+				return;
 			}
 		}
 	}
 	SaveData(data);
-	if(parseInt(pageCount) == parseInt(currentPage)+1)
+	if(parseInt(pageCount) == parseInt(currentPage))
 	{
 		Download();
 		localStorage.removeItem('reviews');
